@@ -34,7 +34,7 @@ namespace PLINQ
             CreateDataSource(200);
 
             Process(ExecutionModes.Sequential);
-            Process(ExecutionModes.Parallel, 1);
+            Process(ExecutionModes.Parallel);
             Process(ExecutionModes.Parallel, 2);
             Process(ExecutionModes.Parallel, 3);
 
@@ -44,7 +44,7 @@ namespace PLINQ
             CreateDataSource(int.MaxValue);
 
             Process(ExecutionModes.Sequential);
-            Process(ExecutionModes.Parallel, 1);
+            Process(ExecutionModes.Parallel);
             Process(ExecutionModes.Parallel, 2);
             Process(ExecutionModes.Parallel, 3);
 
@@ -63,7 +63,16 @@ namespace PLINQ
                     break;
 
                 case ExecutionModes.Parallel:
-                    count = DataSource.AsParallel().WithDegreeOfParallelism(degreeOfParalellism).Count(n => n.IsEven());
+
+                    if (degreeOfParalellism.Equals(0))
+                    {
+                        count = DataSource.AsParallel().Count(n => n.IsEven());
+                    }
+                    else
+                    {
+                        count = DataSource.AsParallel().WithDegreeOfParallelism(degreeOfParalellism).Count(n => n.IsEven());
+                    }
+
                     break;
 
                 default:
